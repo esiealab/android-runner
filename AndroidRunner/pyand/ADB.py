@@ -8,6 +8,7 @@ try:
     import platform
     import shlex
     from os import popen as pipe
+    import os
 except ImportError as e:
     print("[!] Required module missing. %s" % e.args[0])
     sys.exit(-1)
@@ -31,7 +32,7 @@ class ADB(object):
     # default TCP/IP host
     DEFAULT_TCP_HOST = "localhost"
 
-    def __init__(self, adb_path="adb"):
+    def __init__(self, adb_path=os.getenv('ADB_PATH', 'adb')):
         # By default we assume adb is in $PATH
         self.__adb_path = adb_path
         if not self.check_path():
@@ -70,8 +71,7 @@ class ADB(object):
             # All arguments must be single list items
             a = shlex.split(cmd)
 
-        path = shlex.split(self.__adb_path)
-        #a.insert(0, self.__adb_path)
+        path = shlex.split(self.__adb_path.replace('\'', '').replace('\"', ''))
         a = path + a
 
         if self.__target is not None:

@@ -1,4 +1,5 @@
 import os.path as op
+import os
 
 # This is basically a singleton
 # https://stackoverflow.com/a/10936915
@@ -9,7 +10,7 @@ from .util import ConfigError, load_json
 
 
 class Devices:
-    def __init__(self, devices, adb_path='adb', devices_spec=None):
+    def __init__(self, devices, adb_path=os.getenv('ADB_PATH', 'adb'), devices_spec=None):
         if devices_spec is None:
             devices_spec = op.join(ROOT_DIR, 'devices.json')
             

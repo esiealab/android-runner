@@ -1,6 +1,7 @@
 import copy
 import csv
 import os.path as op
+import os
 
 import pytest
 from mock import Mock, call, patch, mock_open
@@ -872,7 +873,7 @@ class TestPerfettoPlugin(object):
         assert perfetto_plugin.paths == paths.paths_dict()
         assert perfetto_plugin.perfetto_config_file_local_path == config["config_file"]
         assert perfetto_plugin.perfetto_config_file_format == config["config_file_format"]
-        assert perfetto_plugin.adb_path == "adb"
+        assert perfetto_plugin.adb_path == os.getenv('ADB_PATH', 'adb')
     
     def test_dependencies(self, perfetto_plugin):
         assert perfetto_plugin.dependencies() == []
@@ -915,7 +916,7 @@ class TestPerfettoPlugin(object):
         assert perfetto_plugin.perfetto_trace_file_device_path == op.join(perfetto_plugin.PERFETTO_TRACES_DEVICE_PATH,
                  "2020_12_31T21_40_22_610621.perfetto_trace")
         assert perfetto_plugin.perfetto_device_pid == "42"
-        subprocess_mock.assert_called_with(["adb", "-s", mock_device.id, "shell", f"cat {perfetto_plugin.perfetto_config_file_device_path} | perfetto --background --txt -c - -o {perfetto_plugin.perfetto_trace_file_device_path}"],
+        subprocess_mock.assert_called_with([os.getenv('ADB_PATH', 'adb'), "-s", mock_device.id, "shell", f"cat {perfetto_plugin.perfetto_config_file_device_path} | perfetto --background --txt -c - -o {perfetto_plugin.perfetto_trace_file_device_path}"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     @patch("AndroidRunner.Plugins.perfetto.Perfetto.subprocess.Popen")
@@ -934,7 +935,7 @@ class TestPerfettoPlugin(object):
         assert perfetto_plugin.perfetto_trace_file_device_path == op.join(perfetto_plugin.PERFETTO_TRACES_DEVICE_PATH,
                  "2020_12_31T21_40_22_610621.perfetto_trace")
         assert perfetto_plugin.perfetto_device_pid == "42"
-        subprocess_mock.assert_called_with(["adb", "-s", mock_device.id, "shell", f"cat {perfetto_plugin.perfetto_config_file_device_path} | perfetto --background {empty_string} -c - -o {perfetto_plugin.perfetto_trace_file_device_path}"],
+        subprocess_mock.assert_called_with([os.getenv('ADB_PATH', 'adb'), "-s", mock_device.id, "shell", f"cat {perfetto_plugin.perfetto_config_file_device_path} | perfetto --background {empty_string} -c - -o {perfetto_plugin.perfetto_trace_file_device_path}"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
  

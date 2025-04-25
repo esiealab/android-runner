@@ -17,7 +17,7 @@ class PluginTests(object):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.errors = []
         self.config = config
-        adb_path = config.get('adb_path', 'adb')
+        adb_path = config.get('adb_path', os.getenv('ADB_PATH', 'adb'))
         self.devices = Devices(config['devices'], adb_path=adb_path)
         self.profilers = None
         self.output_root = paths.OUTPUT_DIR

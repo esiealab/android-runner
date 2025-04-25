@@ -31,7 +31,7 @@ def configure_settings(device_id, setting, enable):
     return shell(device_id, cmd)
 
 # noinspection PyProtectedMember
-def setup(path='adb'):
+def setup(path=os.getenv('ADB_PATH', 'adb')):
     global adb
     adb = ADB(adb_path=path)
     # Accessing class private variables to avoid another print of the same error message

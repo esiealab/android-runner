@@ -4,6 +4,7 @@ import multiprocessing as mp
 import os.path as op
 import time
 from os import remove, rmdir, walk
+import os
 from threading import Thread
 from AndroidRunner.USBHandler import USBHandler
 from . import Tests
@@ -27,7 +28,7 @@ class Experiment(object):
         Tests.is_valid_option(self.clear_cache, valid_options=[True, False])
         if 'devices' not in config:
             raise ConfigError('"device" is required in the configuration')
-        adb_path = config.get('adb_path', 'adb')
+        adb_path = config.get('adb_path', os.getenv('ADB_PATH', 'adb'))
         self.devices = Devices(config['devices'], adb_path=adb_path, devices_spec=config.get('devices_spec'))
         self.repetitions = Tests.is_integer(config.get('repetitions', 1))
         self.paths = config.get('paths', [])

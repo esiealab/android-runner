@@ -38,7 +38,7 @@ class Perfetto(Profiler):
         self.perfetto_config_file_format = config.get("config_file_format", "text")
         self.perfetto_config_file_device_path = ""
 
-        self.adb_path = util.load_json(op.join(self.paths["CONFIG_DIR"], self.paths['ORIGINAL_CONFIG_DIR'])).get("adb_path", "adb")
+        self.adb_path = util.load_json(op.join(self.paths["CONFIG_DIR"], self.paths['ORIGINAL_CONFIG_DIR'])).get("adb_path", os.getenv('ADB_PATH', 'adb'))
 
     def dependencies(self):
         return []

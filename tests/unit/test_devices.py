@@ -548,7 +548,7 @@ class TestDevices(object):
         with pytest.raises(ConfigError):
             Devices(['fake_device'])
 
-        adb_setup.assert_called_once_with('adb')
+        adb_setup.assert_called_once_with(os.getenv('ADB_PATH', 'adb'))
 
     @patch('AndroidRunner.Device.Device.__init__')
     @patch('AndroidRunner.Devices.load_json')
@@ -649,7 +649,7 @@ class TestAdb(object):
         Adb.setup()
 
         assert isinstance(Adb.adb, MagicMock)
-        adb.assert_called_once_with(adb_path='adb')
+        adb.assert_called_once_with(adb_path=os.getenv('ADB_PATH', 'adb'))
 
     @patch('AndroidRunner.Adb.ADB')
     def test_setup_error(self, adb):

@@ -70,7 +70,10 @@ class ADB(object):
             # All arguments must be single list items
             a = shlex.split(cmd)
 
-        a.insert(0, self.__adb_path)
+        path = shlex.split(self.__adb_path)
+        #a.insert(0, self.__adb_path)
+        a = path + a
+
         if self.__target is not None:
             # add target device arguments to the command
             a.insert(1, '-s')

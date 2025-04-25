@@ -28,7 +28,7 @@ As visualized below, Android Runner consists of the following components:
     - [Configure your experimentation](#configure-your-experimentation)
     - [Run the container](#run-the-container)
       - [Linux](#linux)
-    - [Windows](#windows)
+      - [Windows](#windows)
   - [Quick Start](#quick-start)
 
 ## How to Cite Android Runner
@@ -63,7 +63,7 @@ volumes:
       - ./myexperiment:/exp
 ```
 
-Change your [docker-compose.yml](docker-compose.yml) and define in the `command` the path to the `config.json` file you want to exectute (be careful to use the name of the internal folder defined before):
+Change your [docker-compose.yml](docker-compose.yml) and define in the `command` the path to the `config.json` file you want to execute (be careful to use the name of the internal folder defined before):
 ```
 command: /exp/config_web.json
 ```
@@ -72,7 +72,7 @@ command: /exp/config_web.json
 ```
 docker compose up
 ```
-### Windows
+#### Windows
 Run `adb` server on your windows:
 ```
 adb start-server

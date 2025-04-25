@@ -1,0 +1,26 @@
+services:
+  app:
+    image: android-runner:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        - ANDROID_COMMANDLINE_TOOLS_FILE_LINK=https://dl.google.com/android/repository/commandlinetools-linux-9123335_latest.zip  
+    container_name: android-runner
+    #restart: unless-stopped
+    privileged: true
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - ./devices.json:/app/devices.json
+      - ./myexperiment:/exp
+    #  - ./:/app # Uncomment to mount the current directory to /app, during development.
+    command: /exp/config_web_docker_adb_server.json
+
+
+# USE: 
+# docker compose build
+# docker compose up 
+
+# ADAPT, change in this file:
+#   Volumes to point to your devices.json and the folder of your experiment
+#   Command to point to your config.json (folder is according to the volume mounted)

@@ -19,15 +19,17 @@ As visualized below, Android Runner consists of the following components:
 </p>
 
 ## Table of Contents
-- [How to Cite Android Runner](#how-to-cite-android-runner)
-- [Setup](#setup)
-- [Quick Start](#quick-start)
-- [Structure](#structure)
-  - [devices.json](#devicesjson)
-  - [Experiment Configuration](#experiment-configuration)
-- [Plugin Profilers](#plugin-profilers)
-- [Experiment Continuation](#experiment-continuation)
-- [Compatible Devices](#compatible-devices)
+- [Android Runner](#android-runner)
+  - [Table of Contents](#table-of-contents)
+  - [How to Cite Android Runner](#how-to-cite-android-runner)
+  - [Setup](#setup)
+  - [Setup with docker](#setup-with-docker)
+    - [Build the container](#build-the-container)
+    - [Configure your experimentation](#configure-your-experimentation)
+    - [Run the container](#run-the-container)
+      - [Linux](#linux)
+    - [Windows](#windows)
+  - [Quick Start](#quick-start)
 
 ## How to Cite Android Runner
 
@@ -46,6 +48,46 @@ If Android Runner is helping your research, consider to cite it as follows, than
 
 ## Setup
 Instructions can be found [here](https://github.com/S2-group/android-runner/wiki/Setup). Instructions for specific plugins are included in the plugins' READMEs.
+
+## Setup with docker
+### Build the container
+```
+docker compose build
+``` 
+
+### Configure your experimentation
+Create a folder with all files to define your experimentation (See [myexperiment](myexperiment/) or [examples](examples/)).
+Change your [docker-compose.yml](docker-compose.yml) to mount your experiment in a folder in the container:
+```
+volumes:
+      - ./myexperiment:/exp
+```
+
+Change your [docker-compose.yml](docker-compose.yml) and define in the `command` the path to the `config.json` file you want to exectute (be careful to use the name of the internal folder defined before):
+```
+command: /exp/config_web.json
+```
+### Run the container
+#### Linux
+```
+docker compose up
+```
+### Windows
+Run `adb` server on your windows:
+```
+adb start-server
+```
+In your `config.json` file, change the `adb_path` to use your `adb` server launched on windows (See example [here](myexperiment/config_web_docker_adb_server.json)):
+```
+{
+    "adb_path": "adb -H host.docker.internal ",
+...
+}
+```
+Run the container:
+```
+docker compose up
+```
 
 ## Quick Start
 To run an experiment, run:

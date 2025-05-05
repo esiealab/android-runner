@@ -8,15 +8,19 @@ services:
         - ANDROID_COMMANDLINE_TOOLS_FILE_LINK=https://dl.google.com/android/repository/commandlinetools-linux-9123335_latest.zip  
     container_name: android-runner
     privileged: true
-    #environment: # To change the ADB_PATH, e.g. if you use windows, uncomment and set the path to your ADB server
-    #  - ADB_PATH=adb -H host.docker.internal -P 5037
+    stdin_open: true
+    tty: true
+      #environment: # To change the ADB_PATH, e.g. if you use windows, uncomment and set the path to your ADB server
+      #- ADB_PATH=adb -H host.docker.internal -P 5037
     volumes:
       - /dev/bus/usb:/dev/bus/usb
       - ./devices.json:/app/devices.json
       - ./myexperiment:/exp
-    #  - ./:/app # Uncomment to mount the current directory to /app, during development.
+      - ./adb_keys:/root/.android
+        #- ./:/app # Uncomment to mount the current directory to /app, during development.
     command: /exp/config_web.json
-
+      #- sleep infinity
+      #entrypoint: "bash"
 # USE: 
 # docker compose build
 # docker compose up 

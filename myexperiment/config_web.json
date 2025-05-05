@@ -1,7 +1,7 @@
 {
   "type": "web",
   "devices": {
-    "FP4": {}
+    "Pixel3": {}
   },
   "repetitions": 1,
   "browsers": [

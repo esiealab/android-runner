@@ -17,8 +17,9 @@ services:
       - ./devices.json:/app/devices.json
       - ./myexperiment:/exp
       - ./adb_keys:/root/.android
-        #- ./:/app # Uncomment to mount the current directory to /app, during development.
-    command: /exp/config_web.json
+      - ./:/app # Uncomment to mount the current directory to /app, during development.
+    command: /exp/config_battery.json #>
+      #bash -c "adb connect 10.104.84.193:5555 && python3 __main__.py /exp/config_web.json" #/exp/config_web.json
       #- sleep infinity
       #entrypoint: "bash"
 # USE: 

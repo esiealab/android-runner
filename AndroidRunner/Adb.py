@@ -3,6 +3,7 @@ import os.path as op
 import os, glob
 import zipfile
 from time import sleep
+import re
 
 from .pyand import ADB
 from AndroidRunner.util import ConfigError
@@ -41,6 +42,10 @@ def setup(path=os.getenv('ADB_PATH', 'adb')):
 
 
 def connect(device_id):
+    match = re.match(r'^(\d{1,3}(?:\.\d{1,3}){3}):(\d+)$', device_id)
+    if match:
+        ip, port = match.groups()
+        adb.connect_remote(ip, port)
     device_list = adb.get_devices()
     if not device_list:
         raise ConnectionError('No devices are connected')

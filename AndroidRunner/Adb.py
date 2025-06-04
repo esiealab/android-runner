@@ -6,6 +6,7 @@ from time import sleep
 
 from .pyand import ADB
 from AndroidRunner.util import ConfigError
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,10 @@ def setup(path='adb'):
 
 
 def connect(device_id):
+    match = re.match(r'^(\d{1,3}(?:\.\d{1,3}){3}):(\d+)$', device_id)
+    if match:
+        ip, port = match.groups()
+        adb.connect_remote(ip, port)
     device_list = adb.get_devices()
     if not device_list:
         raise ConnectionError('No devices are connected')

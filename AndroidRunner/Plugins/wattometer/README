@@ -1,0 +1,32 @@
+# Wattometer Plugin
+
+This plugin allows Android Runner to interact with a `watto-meter` board in
+order to collect energy measurements. The plugin sends a simple HTTP request to
+the board before and after each run.
+
+## Configuration
+
+In your `config.json` file add a section similar to:
+```json
+"profilers": {
+    "wattometer": {
+        "ip": "192.168.0.10",
+        "experiment_name": "my_experiment"
+    }
+}
+```
+
+* `ip` – IP address of the board.
+* `experiment_name` – Name that will be used as device name when measurements
+  start.
+
+## Behaviour
+
+At the start of a run the plugin requests:
+`http://<ip>/startMeasures?device=<experiment_name>`
+
+When the run finishes it sends:
+`http://<ip>/stopMeasures`
+
+The board is expected to handle these endpoints as implemented in its
+`APIManager`.

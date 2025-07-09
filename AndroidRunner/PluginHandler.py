@@ -101,6 +101,11 @@ class PluginHandler(object):
         data_dir = os.path.join(output_dir, 'data')
         result_file = os.path.join(output_dir, 'Aggregated_Results_{}.csv'.format(self.moduleName))
 
+        if not os.path.isdir(data_dir):
+            self.logger.debug('%s: no data directory at %s, skipping aggregation'
+                              % (self.moduleName, data_dir))
+            return
+
         if aggregate_function_lower == 'none':
             return
         elif aggregate_function_lower == 'default':

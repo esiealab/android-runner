@@ -37,7 +37,26 @@ class Wattometer(Profiler):
             self.logger.warning(f"Wattometer stop failed: {exc}")
 
     def collect_results(self, device):
-        return
+        try:
+            with request.urlopen(f"{self._base_url()}/listFiles") as resp:
+                files = json.loads(resp.read().decode())
+        except Exception as exc:  # pragma: no cover - network errors are ignored
+            self.logger.warning(f"Failed to list wattometer files: {exc}")
+            return
+
+        if not files:
+            self.logger.warning("No wattometer files found")
+            return
+
+        latest = max(files, key=lambda x: int(x.get("timestamp", 0)))
+        filename = latest["name"]
+        url = f"{self._base_url()}/downloadFile?file={filename}"
+        dest = op.join(self.output_dir, filename)
+        try:
+            with request.urlopen(url) as resp, open(dest, "wb") as out_file:
+                out_file.write(resp.read())
+        except Exception as exc:  # pragma: no cover - network errors are ignored
+            self.logger.warning(f"Failed to download wattometer file: {exc}")
 
     def unload(self, device):
         return

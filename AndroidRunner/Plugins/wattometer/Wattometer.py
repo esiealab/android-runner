@@ -61,6 +61,13 @@ class Wattometer(Profiler):
                 out_file.write(resp.read())
         except Exception as exc:
             self.logger.warning(f"Wattometer download failed: {exc}")
+            return
+
+        del_url = f"http://{self.ip}/deleteFile?file={filename}"
+        try:
+            request.urlopen(del_url, timeout=5)
+        except Exception as exc:
+            self.logger.warning(f"Wattometer delete failed: {exc}")
 
     def unload(self, device):
         return
